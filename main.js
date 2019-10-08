@@ -39,6 +39,19 @@ function drawlevel()
   document.getElementById("playfield").innerHTML=content;
 }
 
+function nextlevel()
+{
+  document.getElementById("playfield").innerHTML="";
+  document.getElementById("playfield").classList.remove("level"+level);
+
+  level++;
+  if (level>32) level=1;
+
+  document.getElementById("playfield").classList.add("level"+level);
+
+  drawlevel();
+}
+
 // Entry point
 function init()
 {
@@ -50,6 +63,8 @@ function init()
   };
 
   drawlevel();
+
+  setInterval(nextlevel, 3*1000);
 }
 
 // Run the init() once page has loaded
