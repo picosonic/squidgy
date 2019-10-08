@@ -2,3 +2,250 @@ body
 {
   background:black;
 }
+
+#playfield
+{
+  width:432px;
+  height:448px;
+  overflow:hidden;
+  margin:0px;
+  padding:0px;
+  line-height:0px;
+}
+
+.tile
+{
+  display:inline-block;
+  width:24px;
+  height:32px;
+  overflow:hidden;
+  margin:0px;
+  padding:0px;
+  line-height:0px;
+  background-repeat: no-repeat;
+}
+
+.level1>.tile
+{
+  background-image:url(graph01.png);
+}
+
+.level2>.tile
+{
+  background-image:url(graph02.png);
+}
+
+.level3>.tile
+{
+  background-image:url(graph03.png);
+}
+
+.level4>.tile
+{
+  background-image:url(graph04.png);
+}
+
+.level5>.tile
+{
+  background-image:url(graph05.png);
+}
+
+.level6>.tile
+{
+  background-image:url(graph06.png);
+}
+
+.level7>.tile
+{
+  background-image:url(graph07.png);
+}
+
+.level8>.tile
+{
+  background-image:url(graph08.png);
+}
+
+.level9>.tile
+{
+  background-image:url(graph09.png);
+}
+
+.level10>.tile
+{
+  background-image:url(graph10.png);
+}
+
+.level11>.tile
+{
+  background-image:url(graph11.png);
+}
+
+.level12>.tile
+{
+  background-image:url(graph12.png);
+}
+
+.level13>.tile
+{
+  background-image:url(graph13.png);
+}
+
+.level14>.tile
+{
+  background-image:url(graph14.png);
+}
+
+.level15>.tile
+{
+  background-image:url(graph15.png);
+}
+
+.level16>.tile
+{
+  background-image:url(graph16.png);
+}
+
+.level17>.tile
+{
+  background-image:url(graph17.png);
+}
+
+.level18>.tile
+{
+  background-image:url(graph18.png);
+}
+
+.level19>.tile
+{
+  background-image:url(graph19.png);
+}
+
+.level20>.tile
+{
+  background-image:url(graph20.png);
+}
+
+.level21>.tile
+{
+  background-image:url(graph21.png);
+}
+
+.level22>.tile
+{
+  background-image:url(graph22.png);
+}
+
+.level23>.tile
+{
+  background-image:url(graph23.png);
+}
+
+.level24>.tile
+{
+  background-image:url(graph24.png);
+}
+
+.level25>.tile
+{
+  background-image:url(graph25.png);
+}
+
+.level26>.tile
+{
+  background-image:url(graph26.png);
+}
+
+.level27>.tile
+{
+  background-image:url(graph27.png);
+}
+
+.level28>.tile
+{
+  background-image:url(graph28.png);
+}
+
+.level29>.tile
+{
+  background-image:url(graph29.png);
+}
+
+.level30>.tile
+{
+  background-image:url(graph30.png);
+}
+
+.level31>.tile
+{
+  background-image:url(graph31.png);
+}
+
+.level32>.tile
+{
+  background-image:url(graph32.png);
+}
+
+.s0
+{
+  background-position:0px 0px;
+}
+
+.s1
+{
+  background-position:0px -32px;
+}
+
+.s2
+{
+  background-position:0px -64px;
+}
+
+.s3
+{
+  background-position:0px -96px;
+}
+
+.s4
+{
+  background-position:0px -128px;
+}
+
+.s5
+{
+  background-position:0px -160px;
+}
+
+.s6
+{
+  background-position:0px -192px;
+}
+
+.s7
+{
+  background-position:0px -224px;
+}
+
+.s8
+{
+  background-position:0px -256px;
+}
+
+.s9
+{
+  background-position:0px -288px;
+}
+
+.s10
+{
+  background-position:0px -320px;
+}
+
+.s11
+{
+  background-position:0px -352px;
+}
+
+.s12
+{
+  background-position:0px -384px;
+}
