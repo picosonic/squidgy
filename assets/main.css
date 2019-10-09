@@ -3,8 +3,56 @@ body
   background:black;
 }
 
+.border
+{
+  position:absolute;
+  left:2px;
+  top:3px;
+  width:436px;
+  height:453px;
+  border:1px solid #aaaaaa;
+}
+
+#score
+{
+  position:absolute;
+  left:442px;
+  top:5px;
+  width:432px;
+  height:448px;
+  overflow:hidden;
+  margin:0px;
+  padding:0px;
+  line-height:0px;
+}
+
+#lives
+{
+  position:absolute;
+  left:442px;
+  top:50px;
+  overflow:hidden;
+  margin:0px;
+  padding:0px;
+  line-height:0px;
+}
+
+#time
+{
+  position:absolute;
+  left:442px;
+  top:100px;
+  overflow:hidden;
+  margin:0px;
+  padding:0px;
+  line-height:0px;
+}
+
 #playfield
 {
+  position:absolute;
+  left:5px;
+  top:6px;
   width:432px;
   height:448px;
   overflow:hidden;
@@ -23,6 +71,21 @@ body
   padding:0px;
   line-height:0px;
   background-repeat: no-repeat;
+}
+
+#score>.tile
+{
+  background-image:url(numbers.png);
+}
+
+#lives>.tile
+{
+  background-image:url(lives.png);
+}
+
+#time>.tile
+{
+  background-image:url(numbers.png);
 }
 
 .level1>.tile
