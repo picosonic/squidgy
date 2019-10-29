@@ -73,6 +73,11 @@ body
   background-repeat: no-repeat;
 }
 
+#playfield>.tile
+{
+  position:absolute;
+}
+
 #score>.tile
 {
   background-image:url(numbers.png);
