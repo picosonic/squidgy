@@ -1,7 +1,3 @@
-var spritewidth=24;
-var spriteheight=32;
-var levelwidth=14;
-var levelheight=18;
 
 // Player/enemy state
 function st(elem)
@@ -20,6 +16,12 @@ var gs={
 
   // level related
   level:1,
+  tiles:[],
+  tilerows:14,
+  tilecolumns:18,
+  tilewidth:24,
+  tileheight:32,
+  scale:1,
 };
 
 // Clear both keyboard and gamepad input state
@@ -103,13 +105,13 @@ function drawlevel()
   var x, y;
   var content="";
 
-  for (y=0; y<levelheight; y++)
+  for (y=0; y<gs.tilerows; y++)
   {
-    for (x=0; x<levelwidth; x++)
+    for (x=0; x<gs.tilecolumns; x++)
     {
       var sprite=0;
 
-      switch (levels[gs.level].data[(y*levelwidth)+x])
+      switch (levels[gs.level].data[(y*gs.tilecolumns)+x])
       {
         case ' ': sprite=0; break; // Space
         case 'W': sprite=1; break; // Wall
@@ -122,7 +124,7 @@ function drawlevel()
         case '^': sprite=10; break; // Wall curved top
         case 'v': sprite=11; break; // Wall curved bottom
         case 'B': sprite=12; break; // ?? Not sure ??
-        default: sprite=levels[gs.level].data.charCodeAt((y*levelwidth)+x)-0x30; break;
+        default: sprite=levels[gs.level].data.charCodeAt((y*gs.tilecolumns)+x)-0x30; break;
       }
 
       content+="<div class='tile s"+sprite+"'></div>";
@@ -159,6 +161,27 @@ function rafcallback(timestamp)
 {
   updateposition();
 
+  window.requestAnimationFrame(rafcallback);
+}
+
+// All the processing required to load the current level into the playfield
+function loadlevel()
+{
+  document.getElementById("playfield").setAttribute("level", gs.level);
+drawlevel();
+}
+
+// Start playing on current level
+function launchgame()
+{
+  /////////////////////////////////////////////////////
+  // Start game
+  gs.player.e=document.getElementById("player");
+
+  // Load everything for "current" level
+  loadlevel();
+
+  // Start the game running
   window.requestAnimationFrame(rafcallback);
 }
 
@@ -199,10 +222,7 @@ function init()
 
   playfieldsize();
 
-  drawlevel();
-
-  // Start the game running
-  window.requestAnimationFrame(rafcallback);
+  launchgame();
 }
 
 // Run the init() once page has loaded
