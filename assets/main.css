@@ -88,162 +88,162 @@ body
   background-image:url(numbers.png);
 }
 
-.level1>.tile
+[level='1']>.tile
 {
   background-image:url(graph01.png);
 }
 
-.level2>.tile
+[level='2']>.tile
 {
   background-image:url(graph02.png);
 }
 
-.level3>.tile
+[level='3']>.tile
 {
   background-image:url(graph03.png);
 }
 
-.level4>.tile
+[level='4']>.tile
 {
   background-image:url(graph04.png);
 }
 
-.level5>.tile
+[level='5']>.tile
 {
   background-image:url(graph05.png);
 }
 
-.level6>.tile
+[level='6']>.tile
 {
   background-image:url(graph06.png);
 }
 
-.level7>.tile
+[level='7']>.tile
 {
   background-image:url(graph07.png);
 }
 
-.level8>.tile
+[level='8']>.tile
 {
   background-image:url(graph08.png);
 }
 
-.level9>.tile
+[level='9']>.tile
 {
   background-image:url(graph09.png);
 }
 
-.level10>.tile
+[level='10']>.tile
 {
   background-image:url(graph10.png);
 }
 
-.level11>.tile
+[level='11']>.tile
 {
   background-image:url(graph11.png);
 }
 
-.level12>.tile
+[level='12']>.tile
 {
   background-image:url(graph12.png);
 }
 
-.level13>.tile
+[level='13']>.tile
 {
   background-image:url(graph13.png);
 }
 
-.level14>.tile
+[level='14']>.tile
 {
   background-image:url(graph14.png);
 }
 
-.level15>.tile
+[level='15']>.tile
 {
   background-image:url(graph15.png);
 }
 
-.level16>.tile
+[level='16']>.tile
 {
   background-image:url(graph16.png);
 }
 
-.level17>.tile
+[level='17']>.tile
 {
   background-image:url(graph17.png);
 }
 
-.level18>.tile
+[level='18']>.tile
 {
   background-image:url(graph18.png);
 }
 
-.level19>.tile
+[level='19']>.tile
 {
   background-image:url(graph19.png);
 }
 
-.level20>.tile
+[level='20']>.tile
 {
   background-image:url(graph20.png);
 }
 
-.level21>.tile
+[level='21']>.tile
 {
   background-image:url(graph21.png);
 }
 
-.level22>.tile
+[level='22']>.tile
 {
   background-image:url(graph22.png);
 }
 
-.level23>.tile
+[level='23']>.tile
 {
   background-image:url(graph23.png);
 }
 
-.level24>.tile
+[level='24']>.tile
 {
   background-image:url(graph24.png);
 }
 
-.level25>.tile
+[level='25']>.tile
 {
   background-image:url(graph25.png);
 }
 
-.level26>.tile
+[level='26']>.tile
 {
   background-image:url(graph26.png);
 }
 
-.level27>.tile
+[level='27']>.tile
 {
   background-image:url(graph27.png);
 }
 
-.level28>.tile
+[level='28']>.tile
 {
   background-image:url(graph28.png);
 }
 
-.level29>.tile
+[level='29']>.tile
 {
   background-image:url(graph29.png);
 }
 
-.level30>.tile
+[level='30']>.tile
 {
   background-image:url(graph30.png);
 }
 
-.level31>.tile
+[level='31']>.tile
 {
   background-image:url(graph31.png);
 }
 
-.level32>.tile
+[level='32']>.tile
 {
   background-image:url(graph32.png);
 }
