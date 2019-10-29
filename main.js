@@ -162,6 +162,12 @@ function rafcallback(timestamp)
   window.requestAnimationFrame(rafcallback);
 }
 
+// Resize the playfield to the browser size
+function playfieldsize()
+{
+  // TODO
+}
+
 // Entry point
 function init()
 {
@@ -185,9 +191,15 @@ function init()
     e.preventDefault();
   };
 
-  drawlevel();
+  // Handle resizing
+  window.addEventListener("resize", function()
+  {
+    playfieldsize();
+  });
 
-  setInterval(nextlevel, 3*1000);
+  playfieldsize();
+
+  drawlevel();
 
   // Start the game running
   window.requestAnimationFrame(rafcallback);
