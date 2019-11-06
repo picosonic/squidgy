@@ -93,162 +93,162 @@ body
   background-image:url(numbers.png);
 }
 
-[level='1']>.tile
+[level='1'] .tile
 {
   background-image:url(graph01.png);
 }
 
-[level='2']>.tile
+[level='2'] .tile
 {
   background-image:url(graph02.png);
 }
 
-[level='3']>.tile
+[level='3'] .tile
 {
   background-image:url(graph03.png);
 }
 
-[level='4']>.tile
+[level='4'] .tile
 {
   background-image:url(graph04.png);
 }
 
-[level='5']>.tile
+[level='5'] .tile
 {
   background-image:url(graph05.png);
 }
 
-[level='6']>.tile
+[level='6'] .tile
 {
   background-image:url(graph06.png);
 }
 
-[level='7']>.tile
+[level='7'] .tile
 {
   background-image:url(graph07.png);
 }
 
-[level='8']>.tile
+[level='8'] .tile
 {
   background-image:url(graph08.png);
 }
 
-[level='9']>.tile
+[level='9'] .tile
 {
   background-image:url(graph09.png);
 }
 
-[level='10']>.tile
+[level='10'] .tile
 {
   background-image:url(graph10.png);
 }
 
-[level='11']>.tile
+[level='11'] .tile
 {
   background-image:url(graph11.png);
 }
 
-[level='12']>.tile
+[level='12'] .tile
 {
   background-image:url(graph12.png);
 }
 
-[level='13']>.tile
+[level='13'] .tile
 {
   background-image:url(graph13.png);
 }
 
-[level='14']>.tile
+[level='14'] .tile
 {
   background-image:url(graph14.png);
 }
 
-[level='15']>.tile
+[level='15'] .tile
 {
   background-image:url(graph15.png);
 }
 
-[level='16']>.tile
+[level='16'] .tile
 {
   background-image:url(graph16.png);
 }
 
-[level='17']>.tile
+[level='17'] .tile
 {
   background-image:url(graph17.png);
 }
 
-[level='18']>.tile
+[level='18'] .tile
 {
   background-image:url(graph18.png);
 }
 
-[level='19']>.tile
+[level='19'] .tile
 {
   background-image:url(graph19.png);
 }
 
-[level='20']>.tile
+[level='20'] .tile
 {
   background-image:url(graph20.png);
 }
 
-[level='21']>.tile
+[level='21'] .tile
 {
   background-image:url(graph21.png);
 }
 
-[level='22']>.tile
+[level='22'] .tile
 {
   background-image:url(graph22.png);
 }
 
-[level='23']>.tile
+[level='23'] .tile
 {
   background-image:url(graph23.png);
 }
 
-[level='24']>.tile
+[level='24'] .tile
 {
   background-image:url(graph24.png);
 }
 
-[level='25']>.tile
+[level='25'] .tile
 {
   background-image:url(graph25.png);
 }
 
-[level='26']>.tile
+[level='26'] .tile
 {
   background-image:url(graph26.png);
 }
 
-[level='27']>.tile
+[level='27'] .tile
 {
   background-image:url(graph27.png);
 }
 
-[level='28']>.tile
+[level='28'] .tile
 {
   background-image:url(graph28.png);
 }
 
-[level='29']>.tile
+[level='29'] .tile
 {
   background-image:url(graph29.png);
 }
 
-[level='30']>.tile
+[level='30'] .tile
 {
   background-image:url(graph30.png);
 }
 
-[level='31']>.tile
+[level='31'] .tile
 {
   background-image:url(graph31.png);
 }
 
-[level='32']>.tile
+[level='32'] .tile
 {
   background-image:url(graph32.png);
 }
@@ -316,4 +316,11 @@ body
 .s12
 {
   background-position:0px -384px;
+}
+
+#player
+{
+  position:absolute;
+  margin-left:5px;
+  margin-top:6px;
 }

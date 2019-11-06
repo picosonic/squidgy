@@ -105,12 +105,12 @@ function updatekeystate(e, dir)
 function nextlevel()
 {
   document.getElementById("playfield").innerHTML="";
-  document.getElementById("playfield").classList.remove("level"+gs.level);
+  document.getElementById("wrapper").classList.remove("level"+gs.level);
 
   gs.level++;
   if (gs.level>32) gs.level=1;
 
-  document.getElementById("playfield").classList.add("level"+gs.level);
+  document.getElementById("wrapper").classList.add("level"+gs.level);
 
   drawlevel();
 }
