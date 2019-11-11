@@ -253,6 +253,13 @@ body
   background-image:url(graph32.png);
 }
 
+@keyframes enemy_flip
+{
+  0% { background-position:0px -192px; }
+  50% { background-position:0px -224px; }
+  100% { background-position:0px -192px; }
+}
+
 .s0
 {
   background-position:0px 0px;
@@ -286,11 +293,21 @@ body
 .s6
 {
   background-position:0px -192px;
+
+  animation-name:enemy_flip;
+  animation-duration:0.5s;
+  animation-iteration-count:infinite;
+  animation-timing-function:steps(1,end);
 }
 
 .s7
 {
   background-position:0px -224px;
+
+  animation-name:enemy_flip;
+  animation-duration:0.5s;
+  animation-iteration-count:infinite;
+  animation-timing-function:steps(1,end);
 }
 
 .s8
