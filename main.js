@@ -1,42 +1,38 @@
-
-// Player/enemy state
-function st(elem)
-{
-  this.e=(elem||null); // DOM element
-
-  this.keystate=0; // keyboard bitfield [action][down][right][up][left]
-  this.padstate=0; // gamepad bitfield [action][down][right][up][left]
-}
-
 // Game state
 var gs={
-  // entities
-  player:new st(),
-  enemies:[],
+  // animation frame of reference
+  step:(1/6), // target step time @ 60 fps
+  acc:0, // accumulated time since last frame
+  lasttime:0, // time of last frame
+
+  // Player state
+  keystate:0, // keyboard bitfield [action][down][right][up][left]
+  padstate:0, // gamepad bitfield [action][down][right][up][left]
 
   // level related
+  playfield:null,
   level:1,
-  tiles:[],
+  grid:[], // x*y tile ids
+  gridelem:[], // x*y tile elements
   tilerows:14,
   tilecolumns:18,
   tilewidth:24,
   tileheight:32,
-  things:[], // collectables
   score:0,
   scale:1,
 };
 
 // Clear both keyboard and gamepad input state
-function clearinputstate(character)
+function clearinputstate()
 {
-  character.keystate=0;
-  character.padstate=0;
+  gs.keystate=0;
+  gs.padstate=0;
 }
 
 // Check if an input is set in either keyboard or gamepad input state
-function ispressed(character, keybit)
+function ispressed(keybit)
 {
-  return (((character.keystate&keybit)!=0) || ((character.padstate&keybit)!=0));
+  return (((gs.keystate&keybit)!=0) || ((gs.padstate&keybit)!=0));
 }
 
 // Update the player key state
@@ -48,9 +44,9 @@ function updatekeystate(e, dir)
     case 65: // A
     case 90: // Z
       if (dir==1)
-        gs.player.keystate|=1;
+        gs.keystate|=1;
       else
-        gs.player.keystate&=~1;
+        gs.keystate&=~1;
       e.preventDefault();
       break;
 
@@ -58,9 +54,9 @@ function updatekeystate(e, dir)
     case 87: // W
     case 59: // semicolon
       if (dir==1)
-        gs.player.keystate|=2;
+        gs.keystate|=2;
       else
-        gs.player.keystate&=~2;
+        gs.keystate&=~2;
       e.preventDefault();
       break;
 
@@ -68,9 +64,9 @@ function updatekeystate(e, dir)
     case 68: // D
     case 88: // X
       if (dir==1)
-        gs.player.keystate|=4;
+        gs.keystate|=4;
       else
-        gs.player.keystate&=~4;
+        gs.keystate&=~4;
       e.preventDefault();
       break;
 
@@ -78,18 +74,18 @@ function updatekeystate(e, dir)
     case 83: // S
     case 190: // dot
       if (dir==1)
-        gs.player.keystate|=8;
+        gs.keystate|=8;
       else
-        gs.player.keystate&=~8;
+        gs.keystate&=~8;
       e.preventDefault();
       break;
 
     case 13: // enter
     case 32: // space
       if (dir==1)
-        gs.player.keystate|=16;
+        gs.keystate|=16;
       else
-        gs.player.keystate&=~16;
+        gs.keystate&=~16;
       e.preventDefault();
       break;
 
@@ -104,152 +100,133 @@ function updatekeystate(e, dir)
 
 function nextlevel()
 {
-  document.getElementById("playfield").innerHTML="";
   document.getElementById("wrapper").classList.remove("level"+gs.level);
 
   gs.level++;
   if (gs.level>32) gs.level=1;
 
   document.getElementById("wrapper").classList.add("level"+gs.level);
+}
 
-  drawlevel();
+function getgrid(x, y)
+{
+  return gs.grid[(y*gs.tilecolumns)+x];
+}
+
+function setgrid(x, y, tileid)
+{
+  gs.grid[(y*gs.tilecolumns)+x]=tileid;
+}
+
+function squashable(x, y)
+{
+  switch (getgrid(x, y))
+  {
+    case 0: // Space
+    case 2: // Dot
+      return true;
+      break;
+  }
+
+  return false;
 }
 
 function updateposition()
 {
   var dbg="";
 
-  dbg+="KEY:"+gs.player.keystate;
+  dbg+="KEY:"+gs.keystate;
+  dbg+=" PAD:"+gs.padstate;
 
   document.getElementById("debug").innerHTML=dbg;
 }
 
-// Request animation frame callback
-function rafcallback(timestamp)
+// Process all enemies for basic movement
+function updateenemyai()
 {
-  updateposition();
+  var enemies=[];
+  var x, y;
 
-  window.requestAnimationFrame(rafcallback);
-}
-
-// Clear set of items from DOM and array
-function clearobjects(items)
-{
-  for (var i=0; i<items.length; i++)
-    items[i].e.remove(); // remove from DOM
-
-  items.splice(0, items.length); // clear array
-}
-
-// Clear the playfield
-function clearplayfield()
-{
-  // Clear any existing tiles
-  clearobjects(gs.tiles);
-
-  // Clear any existing collectables
-  clearobjects(gs.things);
-
-  // Clear any existing characters
-  clearobjects(gs.enemies);
-}
-
-// Add a tile to the playfield
-function addDOMtile(x, y, tileid)
-{
-  var tile=document.createElement("div");
-  var tileobj={};
-
-  // Set properties for DOM object
-  tile.innerHTML="";
-  tile.style.left=x+"px";
-  tile.style.top=y+"px";
-  tile.classList.add("tile");
-  tile.classList.add("s"+tileid);
-
-  // Set properties for tiles array entry
-  tileobj.e=tile;
-  tileobj.id=tileid;
-  tileobj.offsetLeft=x;
-  tileobj.offsetTop=y;
-  tileobj.clientWidth=gs.tilewidth;
-  tileobj.clientHeight=gs.tileheight;
-
-  // Add to tiles array
-  gs.tiles.push(tileobj);
-
-  document.getElementById("playfield").appendChild(tile);
-}
-
-// Add a single collectable item to the DOM and things array
-function addcollectable(x, y, tileid)
-{
-  var thing=document.createElement("div");
-  var thingobj={};
-
-  // Set properties for DOM object
-  thing.innerHTML="";
-  thing.style.left=x+"px";
-  thing.style.top=y+"px";
-  thing.classList.add("tile");
-  thing.classList.add("s"+tileid);
-
-  // Set properties for new things array item
-  thingobj.e=thing;
-  thingobj.id=tileid;
-  thingobj.x=x;
-  thingobj.y=y;
-  thingobj.w=gs.tilewidth;
-  thingobj.h=gs.tileheight;
-
-  // Add to things array
-  gs.things.push(thingobj);
-
-  document.getElementById("playfield").appendChild(thing);
-}
-
-// Add a single enemy to the DOM and enemies array
-function addenemy(x, y, tileid)
-{
-  var enemy=document.createElement("div");
-  var enemyobj=new st(enemy);
-
-  // Set DOM properties
-  enemy.innerHTML="";
-  enemy.style.left=x+"px";
-  enemy.style.top=y+"px";
-  enemy.classList.add("tile");
-  enemy.classList.add("s"+tileid);
-
-  // Set properties for entry in enemies array
-  enemyobj.sx=enemyobj.x=x;
-  enemyobj.sy=enemyobj.y=y;
-  enemyobj.w=gs.tilewidth;
-  enemyobj.h=gs.tileheight;
-
-  // Add to enemies array
-  gs.enemies.push(enemyobj);
-
-  document.getElementById("playfield").appendChild(enemy);
-}
-
-// Add a character to the game
-function addcharacter(x, y, tileid)
-{
-  switch (tileid)
+  // Find the enemies
+  for (y=0; y<gs.tilerows; y++)
   {
-    case 4: // Player
-      gs.player.x=x;
-      gs.player.y=y;
-      gs.player.e.style.left=gs.player.x+"px";
-      gs.player.e.style.top=gs.player.y+"px";
-      gs.player.e.classList.add("tile");
-      gs.player.e.classList.add("s"+tileid);
-      break;
+    for (x=0; x<gs.tilecolumns; x++)
+    {
+      switch (getgrid(x, y))
+      {
+        case 6:
+        case 7:
+        case 106:
+        case 107:
+          enemies.push({x:x, y:y});
+          break;
 
-    case 6: // Enemies
-    case 7:
-      addenemy(x, y, tileid);
+        default:
+          break;
+      }
+    }
+  }
+
+  // Iterate through the enemies to see where they can move to
+  for (var i=0; i<enemies.length; i++)
+  {
+    x=enemies[i].x; y=enemies[i].y;
+    var tile=getgrid(x, y);
+
+    switch (tile)
+    {
+      case 6: // right
+        if (getgrid(x+1, y)==0)
+        {
+          setgrid(x, y, 0);
+          setgrid(x+1, y, 6);
+        }
+        else
+          setgrid(x, y, 106);
+        break;
+
+      case 106: // left
+        if (getgrid(x-1, y)==0)
+        {
+          setgrid(x, y, 0);
+          setgrid(x-1, y, 106);
+        }
+        else
+          setgrid(x, y, 6);
+        break;
+
+      case 7: // down
+        if (getgrid(x, y+1)==0)
+        {
+          setgrid(x, y, 0);
+          setgrid(x, y+1, 7);
+        }
+        else
+          setgrid(x, y, 107);
+        break;
+
+    case 107: // up
+        if (getgrid(x, y-1)==0)
+        {
+          setgrid(x, y, 0);
+          setgrid(x, y-1, 107);
+        }
+        else
+          setgrid(x, y, 7);
+        break;
+
+      default:
+        break;
+    }
+  }
+}
+
+function collision(x, y)
+{
+  switch (getgrid(x, y))
+  {
+    case 2: // Dot
+      gs.score++;
       break;
 
     default:
@@ -257,35 +234,139 @@ function addcharacter(x, y, tileid)
   }
 }
 
-// Add a tile to the game
-function addtile(x, y, tileid)
+// Update the position of players/enemies
+function updatemovements()
 {
-  switch (tileid)
+  var found=0;
+
+  // Find the player
+  for (var y=0; y<gs.tilerows; y++)
   {
-    case 0:
-    case 1:
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-      addDOMtile(x, y, tileid);
-      break;
+    for (var x=0; x<gs.tilecolumns; x++)
+    {
+      // If this is the player, check the keystate/padstate
+      switch (getgrid(x, y))
+      {
+        case 3:
+        case 4:
+        case 5:
+          found=1;
 
-    case 2:
-      addDOMtile(x, y, 0); // Add a space underneath
-      addcollectable(x, y, tileid);
-      break;
+          // Move player when a key is pressed
+          if ((gs.keystate!=0) || (gs.padstate!=0))
+          {
+            // Left key
+            if ((ispressed(1)) && (!ispressed(4)) && (squashable(x-1, y)))
+            {
+                collision(x-1, y);
+                setgrid(x-1, y, 4);
+                setgrid(x, y, 0);
+            }
+            else
+            // Right key
+            if ((ispressed(4)) && (!ispressed(1)) && (squashable(x+1, y)))
+            {
+                collision(x+1, y);
+                setgrid(x+1, y, 4);
+                setgrid(x, y, 0);
+            }
+            else
+            // Up key
+            if ((ispressed(2)) && (!ispressed(8)) && (squashable(x, y-1)))
+            {
+                collision(x, y-1);
+                setgrid(x, y-1, 4);
+                setgrid(x, y, 0);
+            }
+            else
+            // Down key
+            if ((ispressed(8)) && (!ispressed(2)) && (squashable(x, y+1)))
+            {
+                collision(x, y+1);
+                setgrid(x, y+1, 4);
+                setgrid(x, y, 0);
+            }
+          }
+          break;
 
-    case 4:
-    case 6:
-    case 7:
-      addDOMtile(x, y, 0); // Add a space underneath
-      addcharacter(x, y, tileid);
-      break;
+        default:
+          break;
+      }
 
-    default: break;
+      if (found==1) return;
+    }
   }
+}
+
+// Update the sprite ids
+function drawlevel()
+{
+  for (var y=0; y<gs.tilerows; y++)
+    for (var x=0; x<gs.tilecolumns; x++)
+      gs.gridelem[(y*gs.tilecolumns)+x].setAttribute("tile", gs.grid[(y*gs.tilecolumns)+x]%100);
+}
+
+// Update game state
+function update()
+{
+  // Update the game state prior to rendering
+  updatemovements();
+  updateenemyai();
+}
+
+// Update the display of the score
+function updatescore()
+{
+  var text="";
+  var localscore=gs.score;
+
+  for (var i=0; i<8; i++)
+  {
+    var scorechar=localscore%10;
+
+    text="<div class=\"tile\" tile=\""+scorechar+"\"></div>"+text;
+
+    localscore=Math.floor(localscore/10);
+  }
+
+  document.getElementById("score").innerHTML=text;
+}
+
+// Request animation frame callback
+function rafcallback(timestamp)
+{
+  // First time round, just save epoch
+  if (gs.lasttime>0)
+  {
+    // Determine accumulated time since last call
+    gs.acc+=((timestamp-gs.lasttime) / 1000);
+
+    // If it's more than 15 seconds since last call, reset
+    if ((gs.acc>gs.step) && ((gs.acc/gs.step)>(60*15)))
+      gs.acc=gs.step*2;
+
+    // Process "steps" since last call
+    while (gs.acc>gs.step)
+    {
+      update();
+      gs.acc-=gs.step;
+    }
+
+    // Update debug
+    updateposition();
+
+    // Update the tiles to match the grid
+    drawlevel();
+
+    // Update the score
+    updatescore();
+  }
+
+  // Remember when we were last called
+  gs.lasttime=timestamp;
+
+  // Request we are called on the next frame
+  window.requestAnimationFrame(rafcallback);
 }
 
 // All the processing required to load the current level into the playfield
@@ -295,14 +376,11 @@ function loadlevel()
   var content="";
 
   // Set which level we are on
-  document.getElementById("playfield").setAttribute("level", gs.level);
-
-  // Clear the playfield of tiles, things and enemies
-  clearplayfield();
+  gs.playfield.setAttribute("level", gs.level);
 
   // Add the tiles for the level
   for (y=0; y<gs.tilerows; y++)
-  { 
+  {
     for (x=0; x<gs.tilecolumns; x++)
     {
       var sprite=0;
@@ -319,11 +397,11 @@ function loadlevel()
         case 'w': sprite=9; break; // Bomb
         case '^': sprite=10; break; // Wall curved top
         case 'v': sprite=11; break; // Wall curved bottom
-        case 'B': sprite=12; break; // ?? Not sure ??
+        case 'B': sprite=0; break; // ?? Not sure ??
         default: sprite=levels[gs.level].data.charCodeAt((y*gs.tilecolumns)+x)-0x30; break;
       }
 
-      addtile(x*gs.tilewidth, y*gs.tileheight, sprite);
+      setgrid(x, y, sprite);
     }
   }
 }
@@ -333,7 +411,29 @@ function launchgame()
 {
   /////////////////////////////////////////////////////
   // Start game
-  gs.player.e=document.getElementById("player");
+  gs.playfield=document.getElementById("playfield");
+
+  // Add blank tiles
+  for (var y=0; y<gs.tilerows; y++)
+  {
+    for (var x=0; x<gs.tilecolumns; x++)
+    {
+      var tile=document.createElement("div");
+
+      // Set properties for DOM object
+      tile.innerHTML="";
+      tile.style.left=(x*gs.tilewidth)+"px";
+      tile.style.top=(y*gs.tileheight)+"px";
+      tile.style.width=gs.tilewidth+"px";
+      tile.style.height=gs.tileheight+"px";
+      tile.classList.add("tile");
+      tile.setAttribute("tile", "0");
+
+      gs.gridelem[(y*gs.tilecolumns)+x]=tile;
+
+      gs.playfield.appendChild(tile);
+    }
+  }
 
   // Load everything for "current" level
   loadlevel();

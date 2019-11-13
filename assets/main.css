@@ -260,84 +260,77 @@ body
   100% { background-position:0px -192px; }
 }
 
-.s0
+[tile='0']
 {
   background-position:0px 0px;
 }
 
-.s1
+[tile='1']
 {
   background-position:0px -32px;
 }
 
-.s2
+[tile='2']
 {
   background-position:0px -64px;
 }
 
-.s3
+[tile='3']
 {
   background-position:0px -96px;
 }
 
-.s4
+[tile='4']
 {
   background-position:0px -128px;
 }
 
-.s5
+[tile='5']
 {
   background-position:0px -160px;
 }
 
-.s6
+[tile='6']
 {
   background-position:0px -192px;
 
   animation-name:enemy_flip;
-  animation-duration:0.5s;
+  animation-duration:0.25s;
   animation-iteration-count:infinite;
   animation-timing-function:steps(1,end);
 }
 
-.s7
+[tile='7']
 {
   background-position:0px -224px;
 
   animation-name:enemy_flip;
-  animation-duration:0.5s;
+  animation-duration:0.25s;
   animation-iteration-count:infinite;
   animation-timing-function:steps(1,end);
 }
 
-.s8
+[tile='8']
 {
   background-position:0px -256px;
 }
 
-.s9
+[tile='9']
 {
   background-position:0px -288px;
 }
 
-.s10
+[tile='10']
 {
   background-position:0px -320px;
 }
 
-.s11
+[tile='11']
 {
   background-position:0px -352px;
 }
 
-.s12
+[tile='12']
 {
   background-position:0px -384px;
-}
-
-#player
-{
-  position:absolute;
-  margin-left:5px;
-  margin-top:6px;
 }
