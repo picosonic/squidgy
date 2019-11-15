@@ -19,6 +19,7 @@ var gs={
   tilewidth:24,
   tileheight:32,
   score:0,
+  lives:5,
   scale:1,
 };
 
@@ -124,6 +125,7 @@ function squashable(x, y)
   {
     case 0: // Space
     case 2: // Dot
+    case 12: // Bulb (extra life)
       return true;
       break;
   }
@@ -227,6 +229,10 @@ function collision(x, y)
   {
     case 2: // Dot
       gs.score++;
+      break;
+
+    case 12: // Bulb (extra life)
+      gs.lives++;
       break;
 
     default:
@@ -399,7 +405,7 @@ function loadlevel()
         case 'w': sprite=9; break; // Bomb
         case '^': sprite=10; break; // Wall curved top
         case 'v': sprite=11; break; // Wall curved bottom
-        case 'B': sprite=0; break; // ?? Not sure ??
+        case 'B': sprite=12; break; // Bulb (extra life)
         default: sprite=levels[gs.level].data.charCodeAt((y*gs.tilecolumns)+x)-0x30; break;
       }
 
