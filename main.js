@@ -259,7 +259,7 @@ function updatemovements()
             if ((ispressed(1)) && (!ispressed(4)) && (squashable(x-1, y)))
             {
                 collision(x-1, y);
-                setgrid(x-1, y, 4);
+                setgrid(x-1, y, 3);
                 setgrid(x, y, 0);
             }
             else
@@ -267,7 +267,7 @@ function updatemovements()
             if ((ispressed(4)) && (!ispressed(1)) && (squashable(x+1, y)))
             {
                 collision(x+1, y);
-                setgrid(x+1, y, 4);
+                setgrid(x+1, y, 5);
                 setgrid(x, y, 0);
             }
             else
@@ -287,6 +287,8 @@ function updatemovements()
                 setgrid(x, y, 0);
             }
           }
+          else
+            setgrid(x, y, 4);
           break;
 
         default:
