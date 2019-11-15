@@ -332,5 +332,6 @@ body
 
 [tile='12']
 {
-  background-position:0px -384px;
+  background-image:url(supp.png) !important;
+  background-position:0px -32px;
 }
