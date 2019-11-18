@@ -400,7 +400,7 @@ function updatetime()
 {
   var text="";
   var now=new Date();
-  var localtime=gs.timeout-(now.valueOf()/1000);
+  var localtime=Math.floor(gs.timeout-(now.valueOf()/1000));
 
   if (localtime<0) localtime=0;
 
