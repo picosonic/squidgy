@@ -22,6 +22,7 @@ var gs={
   score:0,
   lives:5,
   scale:1,
+  timeout:0,
 };
 
 // Clear both keyboard and gamepad input state
@@ -394,6 +395,27 @@ function updatelives()
   document.getElementById("lives").innerHTML=text;
 }
 
+// Update the display of the time remaining
+function updatetime()
+{
+  var text="";
+  var now=new Date();
+  var localtime=gs.timeout-(now.valueOf()/1000);
+
+  if (localtime<0) localtime=0;
+
+  for (var i=0; i<3; i++)
+  {
+    var timechar=localtime%10;
+
+    text="<div class=\"tile\" tile=\""+timechar+"\"></div>"+text;
+
+    localtime=Math.floor(localtime/10);
+  }
+
+  document.getElementById("time").innerHTML=text;
+}
+
 // Request animation frame callback
 function rafcallback(timestamp)
 {
@@ -420,9 +442,10 @@ function rafcallback(timestamp)
     // Update the tiles to match the grid
     drawlevel();
 
-    // Update the score and lives
+    // Update the score, lives and time
     updatescore();
     updatelives();
+    updatetime();
   }
 
   // Remember when we were last called
@@ -470,6 +493,10 @@ function loadlevel()
 
   // Clear tile cache
   gs.prevtile=0;
+
+  // Set countdown timer
+  var now=new Date();
+  gs.timeout=(now.valueOf()/1000)+90;
 }
 
 // Start playing on current level
