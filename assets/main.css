@@ -293,7 +293,10 @@ body
 [tile='6']
 {
   background-position:0px -192px;
+}
 
+#playfield [tile='6']
+{
   animation-name:enemy_flip;
   animation-duration:0.25s;
   animation-iteration-count:infinite;
@@ -303,7 +306,10 @@ body
 [tile='7']
 {
   background-position:0px -224px;
+}
 
+#playfield [tile='7']
+{
   animation-name:enemy_flip;
   animation-duration:0.25s;
   animation-iteration-count:infinite;
