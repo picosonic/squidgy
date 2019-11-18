@@ -354,6 +354,24 @@ function updatescore()
   document.getElementById("score").innerHTML=text;
 }
 
+// Update the display of the lives
+function updatelives()
+{
+  var text="";
+  var locallives=gs.lives;
+
+  for (var i=0; i<3; i++)
+  {
+    var lifechar=locallives%10;
+
+    text="<div class=\"tile\" tile=\""+lifechar+"\"></div>"+text;
+
+    locallives=Math.floor(locallives/10);
+  }
+
+  document.getElementById("lives").innerHTML=text;
+}
+
 // Request animation frame callback
 function rafcallback(timestamp)
 {
@@ -380,8 +398,9 @@ function rafcallback(timestamp)
     // Update the tiles to match the grid
     drawlevel();
 
-    // Update the score
+    // Update the score and lives
     updatescore();
+    updatelives();
   }
 
   // Remember when we were last called
