@@ -102,12 +102,12 @@ function updatekeystate(e, dir)
 
 function nextlevel()
 {
-  document.getElementById("wrapper").classList.remove("level"+gs.level);
-
   gs.level++;
   if (gs.level>32) gs.level=1;
 
-  document.getElementById("wrapper").classList.add("level"+gs.level);
+  loadlevel();
+
+  document.getElementById("wrapper").setAttribute("level", gs.level);
 }
 
 function getgrid(x, y)
@@ -120,6 +120,18 @@ function setgrid(x, y, tileid)
   gs.grid[(y*gs.tilecolumns)+x]=tileid;
 }
 
+// Check for level completion - when all dots collected
+function completed()
+{
+  // Find dots
+  for (var y=0; y<gs.tilerows; y++)
+    for (var x=0; x<gs.tilecolumns; x++)
+      if (getgrid(x, y)==2) return false;
+
+  return true;
+}
+
+// Can the player walk onto this square
 function squashable(x, y)
 {
   switch (getgrid(x, y))
@@ -131,11 +143,16 @@ function squashable(x, y)
     case 12: // Bulb (extra life)
       return true;
       break;
+
+    case 8: // Exit
+      if (completed()) return true;
+      break;
   }
 
   return false;
 }
 
+// Diagnostic key/pad state
 function updateposition()
 {
   var dbg="";
@@ -184,40 +201,40 @@ function updateenemyai()
         if (getgrid(x+1, y)==0)
         {
           setgrid(x, y, 0);
-          setgrid(x+1, y, 6);
+          setgrid(x+1, y, tile);
         }
         else
-          setgrid(x, y, 106);
+          setgrid(x, y, tile+100);
         break;
 
       case 106: // left
         if (getgrid(x-1, y)==0)
         {
           setgrid(x, y, 0);
-          setgrid(x-1, y, 106);
+          setgrid(x-1, y, tile);
         }
         else
-          setgrid(x, y, 6);
+          setgrid(x, y, tile-100);
         break;
 
       case 7: // down
         if (getgrid(x, y+1)==0)
         {
           setgrid(x, y, 0);
-          setgrid(x, y+1, 7);
+          setgrid(x, y+1, tile);
         }
         else
-          setgrid(x, y, 107);
+          setgrid(x, y, tile+100);
         break;
 
     case 107: // up
         if (getgrid(x, y-1)==0)
         {
           setgrid(x, y, 0);
-          setgrid(x, y-1, 107);
+          setgrid(x, y-1, tile);
         }
         else
-          setgrid(x, y, 7);
+          setgrid(x, y, tile-100);
         break;
 
       default:
@@ -238,6 +255,11 @@ function collision(x, y)
     case 12: // Bulb (extra life)
       gs.lives++;
       setgrid(x, y, 0);
+      break;
+
+    case 8: // Exit
+      if (completed())
+        nextlevel();
       break;
 
     default:
@@ -445,6 +467,9 @@ function loadlevel()
       setgrid(x, y, sprite);
     }
   }
+
+  // Clear tile cache
+  gs.prevtile=0;
 }
 
 // Start playing on current level
