@@ -8,6 +8,7 @@ var gs={
   // Player state
   keystate:0, // keyboard bitfield [action][down][right][up][left]
   padstate:0, // gamepad bitfield [action][down][right][up][left]
+  prevtile:0, // previous tile under player
 
   // level related
   playfield:null,
@@ -125,6 +126,8 @@ function squashable(x, y)
   {
     case 0: // Space
     case 2: // Dot
+    case 10: // Wall curved top
+    case 11: // Wall curved bottom
     case 12: // Bulb (extra life)
       return true;
       break;
@@ -229,10 +232,12 @@ function collision(x, y)
   {
     case 2: // Dot
       gs.score++;
+      setgrid(x, y, 0);
       break;
 
     case 12: // Bulb (extra life)
       gs.lives++;
+      setgrid(x, y, 0);
       break;
 
     default:
@@ -244,6 +249,7 @@ function collision(x, y)
 function updatemovements()
 {
   var found=0;
+  var undertile=0;
 
   // Find the player
   for (var y=0; y<gs.tilerows; y++)
@@ -265,32 +271,40 @@ function updatemovements()
             if ((ispressed(1)) && (!ispressed(4)) && (squashable(x-1, y)))
             {
                 collision(x-1, y);
+                undertile=getgrid(x-1, y);
                 setgrid(x-1, y, 3);
-                setgrid(x, y, 0);
+                setgrid(x, y, gs.prevtile);
+                gs.prevtile=undertile;
             }
             else
             // Right key
             if ((ispressed(4)) && (!ispressed(1)) && (squashable(x+1, y)))
             {
                 collision(x+1, y);
+                undertile=getgrid(x+1, y);
                 setgrid(x+1, y, 5);
-                setgrid(x, y, 0);
+                setgrid(x, y, gs.prevtile);
+                gs.prevtile=undertile;
             }
             else
             // Up key
             if ((ispressed(2)) && (!ispressed(8)) && (squashable(x, y-1)))
             {
                 collision(x, y-1);
+                undertile=getgrid(x, y-1);
                 setgrid(x, y-1, 4);
-                setgrid(x, y, 0);
+                setgrid(x, y, gs.prevtile);
+                gs.prevtile=undertile;
             }
             else
             // Down key
             if ((ispressed(8)) && (!ispressed(2)) && (squashable(x, y+1)))
             {
                 collision(x, y+1);
+                undertile=getgrid(x, y+1);
                 setgrid(x, y+1, 4);
-                setgrid(x, y, 0);
+                setgrid(x, y, gs.prevtile);
+                gs.prevtile=undertile;
             }
           }
           else
