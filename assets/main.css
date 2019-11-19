@@ -336,8 +336,45 @@ body
   background-position:0px -352px;
 }
 
-[tile='12']
+[supp='1'] [tile='12']
 {
   background-image:url(supp.png) !important;
   background-position:0px -32px;
 }
+
+[supp='2'] [tile='12']
+{
+  background-image:url(supp.png) !important;
+  background-position:0px -64px;
+}
+
+[supp='3'] [tile='12']
+{
+  background-image:url(supp.png) !important;
+  background-position:0px -96px;
+}
+
+[supp='4'] [tile='12']
+{
+  background-image:url(supp.png) !important;
+  background-position:0px -128px;
+}
+
+[supp='5'] [tile='12']
+{
+  background-image:url(supp.png) !important;
+  background-position:0px -160px;
+}
+
+[supp='6'] [tile='12']
+{
+  background-image:url(supp.png) !important;
+  background-position:0px -192px;
+}
+
+[supp='7'] [tile='12']
+{
+  background-image:url(supp.png) !important;
+  background-position:0px -224px;
+}
+
