@@ -143,7 +143,7 @@ function squashable(x, y)
     case 2: // Dot
     case 10: // Wall curved top
     case 11: // Wall curved bottom
-    case 12: // Bulb (extra life)
+    case 12: // Supplemental (collectable)
       return true;
       break;
 
@@ -255,14 +255,18 @@ function collision(x, y)
       setgrid(x, y, 0);
       break;
 
-    case 12: // Bulb (extra life)
-      gs.lives++;
-      setgrid(x, y, 0);
-      break;
+    case 12: // Supplemental (collectable)
+      switch (gs.level)
+      {
+        case 1: // Bulb (extra life)
+          gs.lives++;
+          break;
 
-    case 8: // Exit
-      if (completed())
-        nextlevel();
+        default:
+          break;
+      }
+
+      setgrid(x, y, 0);
       break;
 
     default:
@@ -270,11 +274,34 @@ function collision(x, y)
   }
 }
 
+function domovement(x, y, oldx, oldy, character)
+{
+  var undertile=getgrid(x, y);
+
+  // Check for level completed
+  if (undertile==8)
+ {
+    setgrid(x, y, character);
+    setgrid(oldx, oldy, gs.prevtile);
+
+    nextlevel();
+  }
+  else
+  {
+    collision(x, y);
+    undertile=getgrid(x, y);
+
+    setgrid(x, y, character);
+    setgrid(oldx, oldy, gs.prevtile);
+
+    gs.prevtile=undertile;
+  }
+}
+
 // Update the position of players/enemies
 function updatemovements()
 {
   var found=0;
-  var undertile=0;
 
   // Find the player
   for (var y=0; y<gs.tilerows; y++)
@@ -295,41 +322,25 @@ function updatemovements()
             // Left key
             if ((ispressed(1)) && (!ispressed(4)) && (squashable(x-1, y)))
             {
-                collision(x-1, y);
-                undertile=getgrid(x-1, y);
-                setgrid(x-1, y, 3);
-                setgrid(x, y, gs.prevtile);
-                gs.prevtile=undertile;
+              domovement(x-1, y, x, y, 3);
             }
             else
             // Right key
             if ((ispressed(4)) && (!ispressed(1)) && (squashable(x+1, y)))
             {
-                collision(x+1, y);
-                undertile=getgrid(x+1, y);
-                setgrid(x+1, y, 5);
-                setgrid(x, y, gs.prevtile);
-                gs.prevtile=undertile;
+              domovement(x+1, y, x, y, 5);
             }
             else
             // Up key
             if ((ispressed(2)) && (!ispressed(8)) && (squashable(x, y-1)))
             {
-                collision(x, y-1);
-                undertile=getgrid(x, y-1);
-                setgrid(x, y-1, 4);
-                setgrid(x, y, gs.prevtile);
-                gs.prevtile=undertile;
+              domovement(x, y-1, x, y, 4);
             }
             else
             // Down key
             if ((ispressed(8)) && (!ispressed(2)) && (squashable(x, y+1)))
             {
-                collision(x, y+1);
-                undertile=getgrid(x, y+1);
-                setgrid(x, y+1, 4);
-                setgrid(x, y, gs.prevtile);
-                gs.prevtile=undertile;
+              domovement(x, y+1, x, y, 4);
             }
           }
           else
@@ -485,7 +496,7 @@ function loadlevel()
         case 'w': sprite=9; break; // Bomb
         case '^': sprite=10; break; // Wall curved top
         case 'v': sprite=11; break; // Wall curved bottom
-        case 'B': sprite=12; break; // Bulb (extra life)
+        case 'B': sprite=12; break; // Supplemental (collectable)
         default: sprite=levels[gs.level].data.charCodeAt((y*gs.tilecolumns)+x)-0x30; break;
       }
 
