@@ -103,6 +103,8 @@ function updatekeystate(e, dir)
 
 function nextlevel()
 {
+  // TODO add 10 points to score for each remaining second
+
   gs.level++;
   if (gs.level>32) gs.level=1;
 
