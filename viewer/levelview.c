@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define SUPPOFFS 0
 #define LEVELOFFS 259
 #define WIDTH 14
 #define HEIGHT 18
