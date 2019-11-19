@@ -111,6 +111,7 @@ function nextlevel()
   loadlevel();
 
   document.getElementById("wrapper").setAttribute("level", gs.level);
+  document.getElementById("wrapper").setAttribute("supp", gs.supp);
 }
 
 function getgrid(x, y)
@@ -256,10 +257,30 @@ function collision(x, y)
       break;
 
     case 12: // Supplemental (collectable)
-      switch (gs.level)
+      switch (gs.supp)
       {
         case 1: // Bulb (extra life)
           gs.lives++;
+          break;
+
+        case 2: // 100 points cloud
+          gs.score+=100;
+          break;
+
+        case 3: // 500 points coin
+          gs.score+=500;
+          break;
+
+        case 4: // Shield
+          break;
+
+        case 5: // Clock
+          break;
+
+        case 6: // Bomb
+          break;
+
+        case 7: // 5 Bulb
           break;
 
         default:
@@ -474,9 +495,6 @@ function loadlevel()
   var x, y;
   var content="";
 
-  // Set which level we are on
-  gs.playfield.setAttribute("level", gs.level);
-
   // Add the tiles for the level
   for (y=0; y<gs.tilerows; y++)
   {
@@ -503,6 +521,9 @@ function loadlevel()
       setgrid(x, y, sprite);
     }
   }
+
+  // Set the supplemental tile
+  gs.supp=levels[gs.level].supp;
 
   // Clear tile cache
   gs.prevtile=0;
