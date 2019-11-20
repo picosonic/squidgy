@@ -252,7 +252,7 @@ function collision(x, y)
   switch (getgrid(x, y))
   {
     case 2: // Dot
-      gs.score++;
+      gs.score+=5;
       setgrid(x, y, 0);
       break;
 
