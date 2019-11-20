@@ -144,8 +144,17 @@ function squashable(x, y)
   {
     case 0: // Space
     case 2: // Dot
-    case 10: // Wall curved top
-    case 11: // Wall curved bottom
+      return true;
+      break;
+
+    case 10:
+      if ((gs.extra&0x0f)==0x01) return true;
+      break;
+
+    case 11:
+      if ((gs.extra&0xf0)==0x10) return true;
+      break;
+
     case 12: // Supplemental (collectable)
       return true;
       break;
@@ -251,11 +260,37 @@ function updateenemyai()
 
 function collision(x, y)
 {
-  switch (getgrid(x, y))
+  var target=getgrid(x, y);
+  var action=0;
+
+  switch (target)
   {
     case 2: // Dot
       gs.score+=5;
       setgrid(x, y, 0);
+      break;
+
+    case 10:
+    case 11:
+      action=(target==10?(gs.extra&0x0f):((gs.extra&0xf0)>>4));
+      switch (action)
+      {
+        case 1: // Solid
+          break;
+
+        case 2: // Score 5 points
+          gs.score+=5;
+          setgrid(x, y, 0);
+          break;
+
+        case 3: // Loose life
+          gs.lives--;
+          // TODO place player back at starting point
+          break;
+
+        default:
+          break;
+      }
       break;
 
     case 12: // Supplemental (collectable)
@@ -303,7 +338,7 @@ function domovement(x, y, oldx, oldy, character)
 
   // Check for level completed
   if (undertile==8)
- {
+  {
     setgrid(x, y, character);
     setgrid(oldx, oldy, gs.prevtile);
 
