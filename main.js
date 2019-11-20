@@ -23,6 +23,8 @@ var gs={
   lives:5,
   scale:1,
   timeout:0,
+  supp:0,
+  extra:0,
 };
 
 // Clear both keyboard and gamepad input state
@@ -524,6 +526,9 @@ function loadlevel()
 
   // Set the supplemental tile
   gs.supp=levels[gs.level].supp;
+
+  // Set the tile bitfield
+  gs.extra=levels[gs.level].extra;
 
   // Clear tile cache
   gs.prevtile=0;
