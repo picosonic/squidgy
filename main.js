@@ -21,6 +21,7 @@ var gs={
   tileheight:32, // pixel height of tile
   score:0, // current score
   lives:5, // remaining lives
+  shields:0, // shields
   scale:1, // scale factor
   timeout:0, // epoch when level timer expires
   supp:0, // supplementary tile id
@@ -324,6 +325,9 @@ function collision(x, y)
           break;
 
         case 4: // Shield
+          // TODO if 0 shields add 3 otherwise add 1
+          //   show shields on the screen under the timer
+          //   One is lost each time you walk "through" an enemy
           break;
 
         case 5: // Clock - add 24 seconds
@@ -331,9 +335,11 @@ function collision(x, y)
           break;
 
         case 6: // Bomb
+          // Does nothing in original game
           break;
 
         case 7: // 5 Bulb
+          // Does nothing in original game
           break;
 
         default:
@@ -503,6 +509,12 @@ function updatetime()
   document.getElementById("time").innerHTML=text;
 }
 
+// Update the display of the shields
+function updateshields()
+{
+  // TODO display the shields available
+}
+
 // Request animation frame callback
 function rafcallback(timestamp)
 {
@@ -529,10 +541,11 @@ function rafcallback(timestamp)
     // Update the tiles to match the grid
     drawlevel();
 
-    // Update the score, lives and time
+    // Update the score, lives, time and shields
     updatescore();
     updatelives();
     updatetime();
+    updateshields();
   }
 
   // Remember when we were last called

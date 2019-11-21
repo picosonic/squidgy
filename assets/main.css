@@ -48,6 +48,13 @@ body
   line-height:0px;
 }
 
+#shields
+{
+  position:absolute;
+  left:442px;
+  top:150px;
+}
+
 #playfield
 {
   position:absolute;
