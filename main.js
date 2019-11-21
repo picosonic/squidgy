@@ -12,19 +12,19 @@ var gs={
 
   // level related
   playfield:null,
-  level:1,
+  level:1, // current level
   grid:[], // x*y tile ids
   gridelem:[], // x*y tile elements
-  tilerows:14,
-  tilecolumns:18,
-  tilewidth:24,
-  tileheight:32,
-  score:0,
-  lives:5,
-  scale:1,
-  timeout:0,
-  supp:0,
-  extra:0,
+  tilerows:14, // tiles in a row for level
+  tilecolumns:18, // tiles in a column for a level
+  tilewidth:24, // pixel width of tile
+  tileheight:32, // pixel height of tile
+  score:0, // current score
+  lives:5, // remaining lives
+  scale:1, // scale factor
+  timeout:0, // epoch when level timer expires
+  supp:0, // supplementary tile id
+  extra:0, // bitfield for tile 10/11 behaviour
 };
 
 // Clear both keyboard and gamepad input state
@@ -326,7 +326,8 @@ function collision(x, y)
         case 4: // Shield
           break;
 
-        case 5: // Clock
+        case 5: // Clock - add 24 seconds
+          gs.timeout+=24;
           break;
 
         case 6: // Bomb
