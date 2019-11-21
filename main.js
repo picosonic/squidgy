@@ -148,11 +148,11 @@ function squashable(x, y)
       break;
 
     case 10:
-      if ((gs.extra&0x0f)==0x01) return true;
+      if ((gs.extra&0x0f)!=0x01) return true;
       break;
 
     case 11:
-      if ((gs.extra&0xf0)==0x10) return true;
+      if ((gs.extra&0xf0)!=0x10) return true;
       break;
 
     case 12: // Supplemental (collectable)
