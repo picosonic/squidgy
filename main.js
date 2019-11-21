@@ -105,7 +105,15 @@ function updatekeystate(e, dir)
 
 function nextlevel()
 {
-  // TODO add 10 points to score for each remaining second
+  var now=new Date();
+  var localtime=Math.floor(gs.timeout-(now.valueOf()/1000));
+
+  // Add 10 points to score for each remaining second
+  while (localtime>0)
+  {
+    gs.score+=10;
+    localtime--;
+  }
 
   gs.level++;
   if (gs.level>32) gs.level=1;
