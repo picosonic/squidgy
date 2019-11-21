@@ -284,8 +284,15 @@ function collision(x, y)
           break;
 
         case 3: // Loose life
-          gs.lives--;
-          // TODO place player back at starting point
+	  if (gs.lives>0)
+          {
+            gs.lives--;
+            // TODO place player back at starting point
+          }
+          else
+          {
+            // TODO end the game
+          }
           break;
 
         default:
