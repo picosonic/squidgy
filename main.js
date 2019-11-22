@@ -542,9 +542,11 @@ function collision(x, y)
           break;
 
         case 4: // Shield
-          // TODO if 0 shields add 3 otherwise add 1
-          //   show shields on the screen under the timer
-          //   One is lost each time you walk "through" an enemy
+          if (gs.shields==0)
+            gs.shields=3;
+          else
+            gs.shields++;
+          // TODO One is lost each time you walk "through" an enemy
           break;
 
         case 5: // Clock - add 24 seconds
@@ -729,7 +731,12 @@ function updatetime()
 // Update the display of the shields
 function updateshields()
 {
-  // TODO display the shields available
+  var text="";
+
+  for (var i=0; i<gs.shields; i++)
+    text+="<div class=\"tile\"></div>";
+
+  document.getElementById("shields").innerHTML=text;
 }
 
 // Request animation frame callback

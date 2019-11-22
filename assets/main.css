@@ -100,6 +100,12 @@ body
   background-image:url(numbers.png);
 }
 
+#shields>.tile
+{
+  background-image:url(supp.png);
+  background-position:0px -128px;
+}
+
 [level='1'] .tile
 {
   background-image:url(graph01.png);
