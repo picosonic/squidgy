@@ -526,7 +526,7 @@ function collision(x, y)
       }
       break;
 
-    case 12: // Supplemental (collectable)
+    case 12: // Supplemental special (collectable)
       switch (gs.supp)
       {
         case 1: // Bulb (extra life)
@@ -541,16 +541,17 @@ function collision(x, y)
           gs.score+=500;
           break;
 
-        case 4: // Shield
+        case 4: // Shield (immortality)
           if (gs.shields==0)
             gs.shields=3;
           else
             gs.shields++;
+          // TODO Original code sets this to random(3)+3
           // TODO One is lost each time you walk "through" an enemy
           break;
 
-        case 5: // Clock - add 24 seconds
-          gs.timeout+=24;
+        case 5: // Clock - add 25 seconds (extra time)
+          gs.timeout+=25;
           break;
 
         case 6: // Bomb
@@ -641,6 +642,8 @@ function updatemovements()
             {
               domovement(x, y+1, x, y, 4);
             }
+
+            // TODO allow diagonal movement
           }
           else
             setgrid(x, y, 4);
@@ -800,14 +803,14 @@ function loadlevel()
       {
         case ' ': sprite=0; break; // Space
         case 'W': sprite=1; break; // Wall
-        case '.': sprite=2; break; // Dot
-        case 'S': sprite=4; break; // Squidgy
-        case 'H': sprite=6; break; // Horizontal enemy
-        case 'V': sprite=7; break; // Vertical enemy
+        case '.': sprite=2; break; // Dot / collectable
+        case 'S': sprite=4; break; // Squidgy forward
+        case 'H': sprite=6; break; // Horizontal enemy (type 1)
+        case 'V': sprite=7; break; // Vertical enemy (type 2)
         case 'X': sprite=8; break; // Exit
-        case 'w': sprite=9; break; // Bomb
-        case '^': sprite=10; break; // Wall curved top
-        case 'v': sprite=11; break; // Wall curved bottom
+        case 'w': sprite=9; break; // Bomb / static enemy
+        case '^': sprite=10; break; // Selectable tile A
+        case 'v': sprite=11; break; // Selectable tile B
         case 'B': sprite=12; break; // Supplemental (collectable)
         default: sprite=levels[gs.level].data.charCodeAt((y*gs.tilecolumns)+x)-0x30; break;
       }
