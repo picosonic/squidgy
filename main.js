@@ -598,10 +598,11 @@ function domovement(x, y, oldx, oldy, character)
   }
 }
 
-// Update the position of players/enemies
+// Update the position of player
 function updatemovements()
 {
   var found=0;
+  var moved=0;
 
   // Find the player
   for (var y=0; y<gs.tilerows; y++)
@@ -623,27 +624,60 @@ function updatemovements()
             if ((ispressed(1)) && (!ispressed(4)) && (squashable(x-1, y)))
             {
               domovement(x-1, y, x, y, 3);
+              moved=1;
             }
             else
             // Right key
             if ((ispressed(4)) && (!ispressed(1)) && (squashable(x+1, y)))
             {
               domovement(x+1, y, x, y, 5);
+              moved=1;
             }
             else
             // Up key
             if ((ispressed(2)) && (!ispressed(8)) && (squashable(x, y-1)))
             {
               domovement(x, y-1, x, y, 4);
+              moved=1;
             }
             else
             // Down key
             if ((ispressed(8)) && (!ispressed(2)) && (squashable(x, y+1)))
             {
               domovement(x, y+1, x, y, 4);
+              moved=1;
             }
 
-            // TODO allow diagonal movement
+            if (moved==1) return;
+
+            // Allow diagonal movement
+            // Left+Up
+            if ((ispressed(1)) && (ispressed(2)) && (squashable(x-1, y-1)))
+            {
+              domovement(x-1, y-1, x, y, 3);
+              moved=1;
+            }
+            else
+            // Right+Up
+            if ((ispressed(4)) && (ispressed(2)) && (squashable(x+1, y-1)))
+            {
+              domovement(x+1, y-1, x, y, 5);
+              moved=1;
+            }
+            else
+            // Right+Down
+            if ((ispressed(4)) && (ispressed(8)) && (squashable(x+1, y+1)))
+            {
+              domovement(x+1, y+1, x, y, 5);
+              moved=1;
+            }
+            else
+            // Left+Down
+            if ((ispressed(1)) && (ispressed(8)) && (squashable(x-1, y+1)))
+            {
+              domovement(x-1, y+1, x, y, 3);
+              moved=1;
+            }
           }
           else
             setgrid(x, y, 4);
