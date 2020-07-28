@@ -323,6 +323,23 @@ function gamepadscan()
   }
 }
 
+function swirl(x, y)
+{
+  // TODO
+  //
+  // Animate squidgy at x, y
+  //
+  // loop x 2
+  //   spr 3
+  //   delay 100 ms
+  //   spr 4
+  //   delay 100 ms
+  //   spr 5
+  //   delay 100 ms
+  //   spr 4
+  //   delay 100 ms
+}
+
 function nextlevel()
 {
   var now=new Date();
