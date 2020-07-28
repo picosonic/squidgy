@@ -9,6 +9,8 @@ var gs={
   keystate:0, // keyboard bitfield [action][down][right][up][left]
   padstate:0, // gamepad bitfield [action][down][right][up][left]
   prevtile:0, // previous tile under player
+  startx:0, // player x position at start of level
+  starty:0, // player y position at start of level
 
   gamepad:-1,
   gamepadbuttons:[], // Button mapping
@@ -496,11 +498,14 @@ function collision(x, y)
       setgrid(x, y, 0);
       break;
 
-    case 10:
+    case 10: // Variable collectables
     case 11:
       action=(target==10?(gs.extra&0x0f):((gs.extra&0xf0)>>4));
       switch (action)
       {
+        case 0: // Scenery
+          break;
+
         case 1: // Solid
           break;
 
@@ -510,10 +515,11 @@ function collision(x, y)
           break;
 
         case 3: // Loose life
-	  if (gs.lives>0)
+          if (gs.lives>0)
           {
             gs.lives--;
-            // TODO place player back at starting point
+
+            return 1;
           }
           else
           {
@@ -572,6 +578,8 @@ function collision(x, y)
     default:
       break;
   }
+
+  return 0;
 }
 
 function domovement(x, y, oldx, oldy, character)
@@ -588,13 +596,23 @@ function domovement(x, y, oldx, oldy, character)
   }
   else
   {
-    collision(x, y);
-    undertile=getgrid(x, y);
+    if (collision(x, y)==0)
+    {
+      undertile=getgrid(x, y);
 
-    setgrid(x, y, character);
-    setgrid(oldx, oldy, gs.prevtile);
+      setgrid(x, y, character);
+      setgrid(oldx, oldy, gs.prevtile);
 
-    gs.prevtile=undertile;
+      gs.prevtile=undertile;
+    }
+    else
+    {
+      // Place player back at starting point
+      setgrid(oldx, oldy, gs.prevtile);
+      setgrid(startx, starty, 4);
+
+      gs.prevtile=0;
+    }
   }
 }
 
@@ -847,6 +865,13 @@ function loadlevel()
         case 'v': sprite=11; break; // Selectable tile B
         case 'B': sprite=12; break; // Supplemental (collectable)
         default: sprite=levels[gs.level].data.charCodeAt((y*gs.tilecolumns)+x)-0x30; break;
+      }
+
+      // Remember player start position for this level
+      if (sprite==4)
+      {
+        startx=x;
+        starty=y;
       }
 
       setgrid(x, y, sprite);
